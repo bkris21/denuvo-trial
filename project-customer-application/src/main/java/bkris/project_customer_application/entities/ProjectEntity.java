@@ -1,40 +1,45 @@
 package bkris.project_customer_application.entities;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "customers")
-public class Customer {
+@Table(name = "projects")
+public class ProjectEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "customer_name")
+    @Column(name = "project_name")
     private String name;
 
-    @Column(name = "contact")
-    private String contact;
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "creation_date")
     private LocalDate creationDate;
 
-    @OneToMany(mappedBy = "customer")
-    private Set<Project> projects = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private CustomerEntity customer;
 
-    public Customer(String name, String contact, LocalDate creationDate) {
+
+    public ProjectEntity(String name, String description) {
         this.name = name;
-        this.contact = contact;
-        this.creationDate = creationDate;
+        this.description = description;
+        this.creationDate = LocalDate.now();
     }
+
+
 }
