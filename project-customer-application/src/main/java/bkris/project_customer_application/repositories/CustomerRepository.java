@@ -9,6 +9,6 @@ import java.util.Optional;
 
 public interface CustomerRepository extends JpaRepository<CustomerEntity, Long> {
 
-    @Query("select c from CustomerEntity c join fetch c.projects")
-    CustomerEntity findByNameAndContact(@Param("customer_name") String name, @Param("contact") String contact);
+    @Query("select c from CustomerEntity c join fetch c.projects where c.name =:customerName and c.contact = :contact")
+    CustomerEntity findByNameAndContact(@Param("customerName") String name, @Param("contact") String contact);
 }
