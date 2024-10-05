@@ -94,4 +94,40 @@ public class CustomerControllerIntegrationTest {
                     assertThat(customerResponse.getProjects()).hasSize(2).extracting(ProjectResponse::getName).containsExactlyInAnyOrder("project1", "project2");
                 });
     }
+
+    @Test
+    void getAllCustomersWithProjects(){
+        webTestClient.post()
+                .uri("/api/customer/project")
+                .bodyValue(new CustomerRequest("Customer1", "c1@mail.com", Optional.of(new ProjectRequest("project1", "project1"))))
+                .exchange()
+                .expectStatus().is2xxSuccessful();
+        webTestClient.post()
+                .uri("/api/customer/project")
+                .bodyValue(new CustomerRequest("Customer1", "c1@mail.com", Optional.of(new ProjectRequest("project2", "project2"))))
+                .exchange()
+                .expectStatus().is2xxSuccessful();
+        webTestClient.post()
+                .uri("/api/customer/project")
+                .bodyValue(new CustomerRequest("Customer2", "c2@mail.com", Optional.of(new ProjectRequest("project3", "project3"))))
+                .exchange()
+                .expectStatus().is2xxSuccessful();
+
+
+        webTestClient.get()
+                .uri("/api/customers/projects")
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBodyList(CustomerResponse.class)
+                .hasSize(2)
+                .value(resultList -> {
+                    assertThat(resultList).extracting(CustomerResponse::getName).containsExactlyInAnyOrder("Customer1", "Customer2");
+                    assertThat(resultList).flatExtracting(CustomerResponse::getProjects)
+                            .hasSize(3)
+                            .extracting(ProjectResponse::getName)
+                            .containsExactlyInAnyOrder("project1","project2", "project3");
+                });
+
+
+    }
 }

@@ -5,10 +5,9 @@ import bkris.project_customer_application.dtos.customer.CustomerResponse;
 import bkris.project_customer_application.services.CustomerProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -21,6 +20,12 @@ public class CustomerController {
     public ResponseEntity<CustomerResponse> createCustomerWithProject(@RequestBody CustomerRequest customerRequest){
        CustomerResponse customerResponse = customerProjectService.createCustomerWithProject(customerRequest);
        return  ResponseEntity.ok(customerResponse);
+    }
+
+    @GetMapping("/customers/projects")
+    public ResponseEntity<List<CustomerResponse>> getAllCustomersWithProjects(){
+        List<CustomerResponse> customerResponses = customerProjectService.getAllCustomersWithProjects();
+        return ResponseEntity.ok(customerResponses);
     }
 
 

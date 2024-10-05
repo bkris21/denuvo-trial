@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,5 +37,10 @@ public class CustomerProjectService {
             customerEntity.addProject(projectEntity);
         }
         return mapper.mapToCustomerResponse(customerRepository.save(customerEntity));
+    }
+
+    public List<CustomerResponse> getAllCustomersWithProjects() {
+        List<CustomerEntity> customers = customerRepository.findAllCustomers();
+        return mapper.mapToCustomerListResponse(customers);
     }
 }
