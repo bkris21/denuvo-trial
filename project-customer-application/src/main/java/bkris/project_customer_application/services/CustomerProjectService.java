@@ -2,8 +2,10 @@ package bkris.project_customer_application.services;
 
 import bkris.project_customer_application.dtos.customer.CustomerRequest;
 import bkris.project_customer_application.dtos.customer.CustomerResponse;
+import bkris.project_customer_application.dtos.project.ProjectResponse;
 import bkris.project_customer_application.entities.CustomerEntity;
 import bkris.project_customer_application.entities.ProjectEntity;
+import bkris.project_customer_application.exceptions.ProjectNotFoundException;
 import bkris.project_customer_application.mappers.CustomerProjectMapper;
 import bkris.project_customer_application.repositories.CustomerRepository;
 import bkris.project_customer_application.repositories.ProjectRepository;
@@ -42,5 +44,10 @@ public class CustomerProjectService {
     public List<CustomerResponse> getAllCustomersWithProjects() {
         List<CustomerEntity> customers = customerRepository.findAllCustomers();
         return mapper.mapToCustomerListResponse(customers);
+    }
+
+    public ProjectResponse getProjectById(Long projectId) {
+        ProjectEntity projectEntity = projectRepository.findById(projectId).orElseThrow(()-> new ProjectNotFoundException("Project Not found with id: "+projectId));
+        return  mapper.mapToProjectResponse(projectEntity);
     }
 }

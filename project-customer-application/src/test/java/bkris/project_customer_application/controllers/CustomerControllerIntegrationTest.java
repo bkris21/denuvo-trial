@@ -127,7 +127,33 @@ public class CustomerControllerIntegrationTest {
                             .extracting(ProjectResponse::getName)
                             .containsExactlyInAnyOrder("project1","project2", "project3");
                 });
+    }
 
+
+    @Test
+    void testFindProjectById(){
+        webTestClient.post()
+                .uri("/api/customer/project")
+                .bodyValue(new CustomerRequest("Customer1", "c1@mail.com", Optional.of(new ProjectRequest("project1", "project1"))))
+                .exchange()
+                .expectStatus().is2xxSuccessful();
+
+        CustomerResponse customerResponse = webTestClient.post()
+                .uri("/api/customer/project")
+                .bodyValue(new CustomerRequest("Customer1", "c1@mail.com", Optional.of(new ProjectRequest("project2", "project2"))))
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(CustomerResponse.class)
+                .returnResult().getResponseBody();
+
+        Long projectId = customerResponse.getProjects().stream().toList().get(0).getId();
+
+        webTestClient.get()
+                .uri("api/customer/project/"+projectId)
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(ProjectResponse.class)
+                .value(projectResponse -> assertThat(projectResponse.getName()).isEqualTo("project2"));
 
     }
 }
