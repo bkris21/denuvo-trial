@@ -156,4 +156,25 @@ public class CustomerControllerIntegrationTest {
                 .value(projectResponse -> assertThat(projectResponse.getName()).isEqualTo("project2"));
 
     }
+
+    @Test
+    void testUpdateProjectDetails(){
+        CustomerResponse customerResponse = webTestClient.post()
+                .uri("/api/customer/project")
+                .bodyValue(new CustomerRequest("Customer1", "c1@mail.com", Optional.of(new ProjectRequest("project1", "project1"))))
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(CustomerResponse.class).returnResult().getResponseBody();
+        Long projectId = customerResponse.getProjects().stream().toList().get(0).getId();
+
+
+        webTestClient.put()
+                .uri("/api/customer/project/"+projectId)
+                .bodyValue(new ProjectRequest("new name", "new description"))
+                .exchange().expectBody(ProjectResponse.class)
+                .value(projectResponse -> {
+                    assertThat(projectResponse.getName()).isEqualTo("new name");
+                    assertThat(projectResponse.getDescription()).isEqualTo("new description");
+                });
+    }
 }

@@ -2,6 +2,7 @@ package bkris.project_customer_application.services;
 
 import bkris.project_customer_application.dtos.customer.CustomerRequest;
 import bkris.project_customer_application.dtos.customer.CustomerResponse;
+import bkris.project_customer_application.dtos.project.ProjectRequest;
 import bkris.project_customer_application.dtos.project.ProjectResponse;
 import bkris.project_customer_application.entities.CustomerEntity;
 import bkris.project_customer_application.entities.ProjectEntity;
@@ -47,7 +48,21 @@ public class CustomerProjectService {
     }
 
     public ProjectResponse getProjectById(Long projectId) {
-        ProjectEntity projectEntity = projectRepository.findById(projectId).orElseThrow(()-> new ProjectNotFoundException("Project Not found with id: "+projectId));
-        return  mapper.mapToProjectResponse(projectEntity);
+        ProjectEntity projectEntity = findProject(projectId);
+        return mapper.mapToProjectResponse(projectEntity);
+    }
+
+    @Modifying
+    public ProjectResponse updateProjectById(Long projectId, ProjectRequest projectRequest) {
+        ProjectEntity projectEntity = findProject(projectId);
+        projectEntity.setName(projectRequest.getName());
+        projectEntity.setDescription(projectRequest.getDescription());
+        projectRepository.save(projectEntity);
+        return mapper.mapToProjectResponse(projectEntity);
+    }
+
+
+    private ProjectEntity findProject(Long projectId){
+        return projectRepository.findById(projectId).orElseThrow(()-> new ProjectNotFoundException("Project Not found with id: "+projectId));
     }
 }
