@@ -42,5 +42,11 @@ public class CustomerController {
         return ResponseEntity.ok(projectResponse);
     }
 
+    @DeleteMapping("/customer/project/{projectId}")
+    public ResponseEntity<Void> deleteProjectById(@PathVariable("projectId") Long projectId){
+        customerProjectService.deleteProjectById(projectId);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }

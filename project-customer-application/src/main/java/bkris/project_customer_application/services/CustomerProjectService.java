@@ -65,4 +65,8 @@ public class CustomerProjectService {
     private ProjectEntity findProject(Long projectId){
         return projectRepository.findById(projectId).orElseThrow(()-> new ProjectNotFoundException("Project Not found with id: "+projectId));
     }
+
+    public void deleteProjectById(Long projectId) {
+        projectRepository.deleteById(projectId);
+    }
 }
