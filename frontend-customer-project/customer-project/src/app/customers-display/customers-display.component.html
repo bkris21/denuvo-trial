@@ -1,13 +1,29 @@
+<div *ngFor="let customer of customers; let i = index" class="customer">
 <p>
  <mat-card appearance="outlined">
         <mat-card-header>
-          <mat-card-title> {{customer.name}} {{customer.contact}}</mat-card-title>
-          <mat-card-subtitle>{{customer.projects}}</mat-card-subtitle>
+          <mat-card-title> Name: {{customer.name}} </mat-card-title>
+          <mat-card-subtitle>Contact:{{customer.contact}}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-actions>
-          <button mat-button>Learn More</button>
+          <button mat-button (click)="openProjects(i)">{{ showProjects[i] ? 'Hide Projects': 'Projects'}}</button>
         </mat-card-actions>
-      </mat-card>
-</p>
 
-
+        <div *ngIf="showProjects[i]" class="project-details">
+            <mat-card-content>
+              <h3>Projects:</h3>
+              <ul *ngIf="customer.projects.length > 0; else noProjects">
+                <li *ngFor="let project of customer.projects">
+                  <strong>Project Name:</strong> {{project.name}}<br>
+                  <strong>Description:</strong> {{ project.description }}<br>
+                  <strong>Created on:</strong> {{ project.creationDate }}
+                </li>
+              </ul>
+              <ng-template #noProjects>
+                <p>No projects available for this customer.</p>
+              </ng-template>
+            </mat-card-content>
+          </div>
+        </mat-card>
+    </p>      
+</div>

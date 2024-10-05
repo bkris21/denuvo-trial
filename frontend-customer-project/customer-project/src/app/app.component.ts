@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { Customer } from './customers-display/customer';
-import {HttpClient} from '@angular/common/http'
+
 
 
 @Component({
@@ -10,19 +9,5 @@ import {HttpClient} from '@angular/common/http'
 })
 export class AppComponent {
   title = 'customer-project';
-
-  customers: Customer[] = [];
-
-  constructor(private http: HttpClient){}
-
-  ngOnInit(): void {
-    this.http.get<Customer[]>(
-      "http://localhost:8080/api/customers/projects"
-    ).subscribe(data => this.customers = data);
-  }
-
-  appendData(newCustomer: any): void{
-    this.customers.push(newCustomer);
-  }
 
 }
