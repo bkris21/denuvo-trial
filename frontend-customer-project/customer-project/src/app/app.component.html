@@ -1,4 +1,8 @@
 <div class = "main">
+
+  <h1>Add New Customer With Project</h1>
+  <app-customer-input (newDataEvent)="appendData($event)"/>
+
   <h2>Customers and their Projects</h2>
   <app-customers-display *ngFor="let customer of customers"
                           [customer]="customer"/>

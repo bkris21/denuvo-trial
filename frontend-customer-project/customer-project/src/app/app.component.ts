@@ -21,4 +21,8 @@ export class AppComponent {
     ).subscribe(data => this.customers = data);
   }
 
+  appendData(newCustomer: any): void{
+    this.customers.push(newCustomer);
+  }
+
 }

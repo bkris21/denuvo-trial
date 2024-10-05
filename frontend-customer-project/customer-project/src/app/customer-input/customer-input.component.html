@@ -1,0 +1,24 @@
+<form #customerForm="ngForm" class="customer-form" (ngSubmit)="onSubmit()">
+    <mat-form-field class="customer-full-width">
+        <mat-label>Customer Name</mat-label>
+        <input name="name" ngModel matInput>
+      </mat-form-field>
+
+      <mat-form-field class="customer-full-width">
+        <mat-label>Contact</mat-label>
+        <input name="contact" ngModel matInput>
+      </mat-form-field>
+
+      <mat-form-field class="customer-full-width">
+        <mat-label>Project Name</mat-label>
+        <input name="projectName" ngModel matInput>
+      </mat-form-field>
+
+      <mat-form-field class="customer-full-width">
+        <mat-label>Project Description</mat-label>
+        <input name="description" ngModel matInput>
+      </mat-form-field>
+
+      <button mat-raised-button type="submit">Submit</button>
+      
+</form>

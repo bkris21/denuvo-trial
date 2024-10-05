@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CustomersDisplayComponent } from './customers-display/customers-display.component';
 import { HttpClientModule } from '@angular/common/http';
+import { CustomerInputComponent } from './customer-input/customer-input.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    CustomersDisplayComponent
+    CustomersDisplayComponent,
+    CustomerInputComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
