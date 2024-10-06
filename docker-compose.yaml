@@ -1,0 +1,31 @@
+version: "3.8"
+services:
+  postgredb:
+    platform: linux/x86_64
+    image: "postgres:14.13"
+    restart: always
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: customers-projects
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+  server:
+    build:
+        context: ./project-customer-application
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgredb:5432/customers-projects
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
+    depends_on:
+      - postgredb
+  frontend:
+    build:
+      context: ./frontend-customer-project/customer-project
+    ports:
+      - "4200:4200"
+    depends_on:
+      - server
