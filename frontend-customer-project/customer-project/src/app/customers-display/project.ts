@@ -5,4 +5,11 @@ export class Project{
         public description: string, 
         public creationDate: Date
     ){}
+};
+
+export class ProjectForOutput{
+    constructor(
+        public name: string,
+        public description: string, 
+    ){}
 }

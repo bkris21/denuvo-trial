@@ -12,11 +12,49 @@
         <div *ngIf="showProjects[i]" class="project-details">
             <mat-card-content>
               <h3>Projects:</h3>
-              <ul *ngIf="customer.projects.length > 0; else noProjects">
-                <li *ngFor="let project of customer.projects">
-                  <strong>Project Name:</strong> {{project.name}}<br>
-                  <strong>Description:</strong> {{ project.description }}<br>
-                  <strong>Created on:</strong> {{ project.creationDate }}
+              <ul>
+                <li *ngFor="let project of customer.projects; let j = index">
+                    <div *ngIf="editMode[i][j]; else viewMode">
+                          <mat-form-field class="project-form-field">
+                            <mat-label>Project Name</mat-label>
+                            <input
+                              matInput
+                              name="projectName"
+                              [(ngModel)]="customer.projects[j].name"
+                              placeholder="Enter project name"
+                            />
+                          </mat-form-field>
+          
+                          <mat-form-field class="project-form-field">
+                            <mat-label>Description</mat-label>
+                            <input
+                              matInput
+                              name="description"
+                              [(ngModel)]="customer.projects[j].description"
+                              placeholder="Enter description"
+                            />
+                          </mat-form-field>
+          
+                          <mat-form-field class="project-form-field">
+                            <mat-label>Creation Date</mat-label>
+                            <input
+                              matInput
+                              name="creationDate"
+                              [(ngModel)]="customer.projects[j].creationDate"
+                              disabled
+                            />
+                          </mat-form-field>
+          
+                          <button mat-button (click)="saveProject(i, j)">Save</button>
+                          <button mat-button (click)="cancelEdit(i, j)">Cancel</button>
+                      </div>
+                      <ng-template #viewMode>
+                        <p><strong>Project Name:</strong> {{ project.name }}</p>
+                        <p><strong>Description:</strong> {{ project.description }}</p>
+                        <p><strong>Created on:</strong> {{ project.creationDate }}</p>
+          
+                        <button mat-button (click)="editProject(i, j)">Edit</button>
+                      </ng-template>
                 </li>
               </ul>
               <ng-template #noProjects>

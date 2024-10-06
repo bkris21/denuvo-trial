@@ -34,7 +34,9 @@ export class CustomerInputComponent {
         this.http.post<CustomerForInput>(
           "http://localhost:8080/api/customer/project",
           customer
-        ).subscribe(data => this.newDataEvenet.emit(data))
+        ).subscribe(data => 
+          {this.newDataEvenet.emit(data);
+          window.location.reload()})
       }
 
   }
