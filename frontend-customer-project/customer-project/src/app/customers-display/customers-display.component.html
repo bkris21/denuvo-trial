@@ -45,7 +45,7 @@
                             />
                           </mat-form-field>
           
-                          <button mat-button (click)="saveProject(i, j)">Save</button>
+                          <button mat-button (click)="updateProject(i, j)">Save</button>
                           <button mat-button (click)="cancelEdit(i, j)">Cancel</button>
                       </div>
                       <ng-template #viewMode>
@@ -54,6 +54,7 @@
                         <p><strong>Created on:</strong> {{ project.creationDate }}</p>
           
                         <button mat-button (click)="editProject(i, j)">Edit</button>
+                        <button mat-button color="warn" (click)="deleteProject(project.id)">Delete</button>
                       </ng-template>
                 </li>
               </ul>

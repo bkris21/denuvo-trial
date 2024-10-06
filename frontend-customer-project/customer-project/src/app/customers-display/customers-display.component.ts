@@ -25,6 +25,7 @@ export class CustomersDisplayComponent {
 
   @Input() customer: Customer = new Customer(0, "", "", new Date() , [new Project(0, "", "", new Date())] )
   @Output() newDataEvenet = new EventEmitter();
+  @Output() projectDeleted  = new EventEmitter<number>();
 
   customers: Customer[] = [];
   showProjects: boolean[] =[];
@@ -53,7 +54,7 @@ export class CustomersDisplayComponent {
     this.editMode[i][j] = false;
   }
 
-  saveProject(i: number, j: number) : void{
+  updateProject(i: number, j: number) : void{
     const updatedProject = this.customers[i].projects[j];
     const projectRequest = new ProjectForOutput(updatedProject.name, updatedProject.description);
     this.http.put<ProjectForOutput>(
@@ -63,5 +64,17 @@ export class CustomersDisplayComponent {
       data => this.newDataEvenet.emit(data)
     );
     this.editMode[i][j] = false;
+  }
+
+  deleteProject(id: number):void{
+      this.http.delete(
+        "http://localhost:8080/api/customer/project/"+id
+      ).subscribe(
+        ()=>{   
+          this.customer.projects = this.customer.projects.filter(p => p.id !== id);
+          this.projectDeleted.emit(id);
+          window.location.reload();
+        }
+      );
   }
 }
