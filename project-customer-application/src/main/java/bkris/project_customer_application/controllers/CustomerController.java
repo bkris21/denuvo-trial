@@ -29,7 +29,7 @@ public class CustomerController {
        return  ResponseEntity.ok(customerResponse);
     }
 
-    @GetMapping("/customers/projects/")
+    @GetMapping("/customers/projects")
     public ResponseEntity<List<CustomerResponse>> getAllCustomersWithProjects(){
         List<CustomerResponse> customerResponses = customerProjectService.getAllCustomersWithProjects();
         return ResponseEntity.ok(customerResponses);
