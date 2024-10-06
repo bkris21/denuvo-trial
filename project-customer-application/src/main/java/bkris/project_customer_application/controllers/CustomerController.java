@@ -6,9 +6,14 @@ import bkris.project_customer_application.dtos.project.ProjectRequest;
 import bkris.project_customer_application.dtos.project.ProjectResponse;
 import bkris.project_customer_application.services.CustomerProjectService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -24,10 +29,20 @@ public class CustomerController {
        return  ResponseEntity.ok(customerResponse);
     }
 
-    @GetMapping("/customers/projects")
+    @GetMapping("/customers/projects/")
     public ResponseEntity<List<CustomerResponse>> getAllCustomersWithProjects(){
         List<CustomerResponse> customerResponses = customerProjectService.getAllCustomersWithProjects();
         return ResponseEntity.ok(customerResponses);
+    }
+
+    @GetMapping(value = "/customers/projects/zip", produces = "application/zip")
+    public ResponseEntity<ByteArrayResource> getAllProjectsBetween(@RequestParam("from") LocalDate from, @RequestParam("to") LocalDate to){
+        ByteArrayResource resource = customerProjectService.getAllProjectsBetween(from, to);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment: filename=\"files.zip\"" )
+                .contentLength(resource.contentLength())
+                .contentType(MediaType.valueOf("application/zip"))
+                .body(resource);
     }
 
     @GetMapping("/customer/project/{projectId}")

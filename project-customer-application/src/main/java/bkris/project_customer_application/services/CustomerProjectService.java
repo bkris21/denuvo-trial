@@ -12,11 +12,16 @@ import bkris.project_customer_application.repositories.CustomerRepository;
 import bkris.project_customer_application.repositories.ProjectRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Service
 @RequiredArgsConstructor
@@ -61,12 +66,40 @@ public class CustomerProjectService {
         return mapper.mapToProjectResponse(projectEntity);
     }
 
-
-    private ProjectEntity findProject(Long projectId){
-        return projectRepository.findById(projectId).orElseThrow(()-> new ProjectNotFoundException("Project Not found with id: "+projectId));
+    public ByteArrayResource getAllProjectsBetween(LocalDate from, LocalDate to) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try(ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream)){
+            List<CustomerEntity> customers = findAllCustomersAndProjectsWhereProjectBetween(from, to);
+            fillZipOutputStreamWithData(customers, zipOutputStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return new ByteArrayResource(byteArrayOutputStream.toByteArray());
     }
 
     public void deleteProjectById(Long projectId) {
         projectRepository.deleteById(projectId);
     }
+
+    private ProjectEntity findProject(Long projectId){
+        return projectRepository.findById(projectId).orElseThrow(()-> new ProjectNotFoundException("Project Not found with id: "+projectId));
+    }
+
+    private List<CustomerEntity> findAllCustomersAndProjectsWhereProjectBetween(LocalDate from, LocalDate to){
+        return customerRepository.findAllCustomersWhereProjectsBetween(from, to);
+    }
+
+    private void fillZipOutputStreamWithData(List<CustomerEntity> customers, ZipOutputStream zipOutputStream) throws IOException {
+        for(CustomerEntity customer : customers){
+            String fileName = String.format("%s_%s.txt",customer.getName(), customer.getContact());
+            zipOutputStream.putNextEntry(new ZipEntry(fileName));
+            for(ProjectEntity projectEntity : customer.getProjects()) {
+                String content = String.format("Project name: %s, Description: %s, Time created: %s \n", projectEntity.getName(), projectEntity.getDescription(), projectEntity.getCreationDate());
+                zipOutputStream.write(content.getBytes());
+            }
+            zipOutputStream.closeEntry();
+        }
+    }
+
+
 }
