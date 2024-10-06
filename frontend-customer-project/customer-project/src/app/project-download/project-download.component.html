@@ -1,0 +1,15 @@
+<form #dateForm="ngForm" class="date-form" (ngSubmit)="onDownload()">
+    <div class="date-inputs">
+        <mat-form-field class="date-full-width">
+            <mat-label>From</mat-label>
+            <input type="date" name="from" ngModel matInput >
+        </mat-form-field>
+
+        <mat-form-field class="date-full-width">
+            <mat-label>To</mat-label>
+            <input type="date" name="to" ngModel matInput>
+        </mat-form-field>
+    </div>
+
+    <button mat-raised-button type="submit">Download ZIP</button>
+</form>

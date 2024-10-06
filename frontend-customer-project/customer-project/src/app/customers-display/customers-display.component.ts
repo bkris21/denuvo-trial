@@ -58,7 +58,7 @@ export class CustomersDisplayComponent {
     const updatedProject = this.customers[i].projects[j];
     const projectRequest = new ProjectForOutput(updatedProject.name, updatedProject.description);
     this.http.put<ProjectForOutput>(
-      "http://localhost:8080/api/customer/project/" + updatedProject.id,
+      `http://localhost:8080/api/customer/project/${updatedProject.id}`,
       projectRequest
     ).subscribe(
       data => this.newDataEvenet.emit(data)
@@ -68,7 +68,7 @@ export class CustomersDisplayComponent {
 
   deleteProject(id: number):void{
       this.http.delete(
-        "http://localhost:8080/api/customer/project/"+id
+        `http://localhost:8080/api/customer/project/${id}`
       ).subscribe(
         ()=>{   
           this.customer.projects = this.customer.projects.filter(p => p.id !== id);

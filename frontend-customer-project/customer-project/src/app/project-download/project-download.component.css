@@ -1,0 +1,13 @@
+.date-inputs {
+    display: flex;
+    justify-content: space-between;
+}
+
+.date-full-width {
+    flex: 1;
+    margin-right: 8px;
+}
+
+.date-full-width:last-child {
+    margin-right: 0; 
+}

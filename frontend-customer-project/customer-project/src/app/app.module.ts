@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CustomersDisplayComponent } from './customers-display/customers-display.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CustomerInputComponent } from './customer-input/customer-input.component';
+import { ProjectDownloadComponent } from './project-download/project-download.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { CustomerInputComponent } from './customer-input/customer-input.componen
     BrowserAnimationsModule,
     HttpClientModule,
     CustomersDisplayComponent,
-    CustomerInputComponent
+    CustomerInputComponent,
+    ProjectDownloadComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
