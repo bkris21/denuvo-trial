@@ -35,7 +35,7 @@ public class CustomerController {
     }
 
     @GetMapping(value = "/customers/projects/zip", produces = "application/zip")
-    public ResponseEntity<ByteArrayResource> getAllProjectsBetween(@RequestParam("from") LocalDate from, @RequestParam("to") LocalDate to){
+    public ResponseEntity<ByteArrayResource> getAllProjectsBetween(@RequestParam("startDate") LocalDate from, @RequestParam("endDate") LocalDate to){
         ByteArrayResource resource = customerProjectService.getAllProjectsBetween(from, to);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment: filename=\"files.zip\"" )
