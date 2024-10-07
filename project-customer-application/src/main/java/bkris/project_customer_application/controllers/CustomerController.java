@@ -11,7 +11,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.time.LocalDate;
 import java.util.List;
