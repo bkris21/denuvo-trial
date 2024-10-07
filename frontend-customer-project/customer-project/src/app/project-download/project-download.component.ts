@@ -24,7 +24,7 @@ export class ProjectDownloadComponent {
   onDownload(){
     const {from, to} = this.dateForm.value;
 
-    const url = `http://localhost:8080/api/customers/projects/zip?from=${from}&to=${to}`;
+    const url = `http://localhost:8080/api/customers/projects/zip?startDate=${from}&endDate=${to}`;
     this.http.get(url, {responseType:'blob'}).subscribe((response: Blob)=>{
       const blob = new Blob([response], { type: 'application/zip' });
       const url = window.URL.createObjectURL(blob);
