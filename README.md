@@ -1,5 +1,11 @@
 # Answers for Assigments  
 
+## Assignment 1 (MyExecutor) 
+
+Selected statments:    
+- If a property named "*thread.count*" is not made available to SPring (i.e. through property files), the value of *threadCount* field will be 10.
+- The value of the field *threadName* will always be set to the same value regardless of properties provided to Spring.
+
 ## Assignment 2 (MySQL and H2 Database)  
 
 Selected statments:    
@@ -13,12 +19,12 @@ That’s why I would not suggest H2 for testing.
 
 ## Assignment 5 (Performance)  
 
-First I have an assumption that the size of the GeoIp.db file is not the same in the test environment and in production environment. I assume the file in test environment is much smaller that’s why there are no performance bottlenecks. 
+First I have an assumption that the size of the *GeoIp.db* file is not the same in the test environment and in production environment. I assume the file in test environment is much smaller that’s why there are no performance bottlenecks. 
 
-My best guess what can cause the performance degradation is the getGeoIpDbLocation() method, more specifically the getResourceAsStream().
-The getResourceAsStream() method returns an InputStream instance (depends on the file which one) which do not offer any further logic just reading the file by bytes which in the case of a big file a lot of disk memory communication.
+My best guess what can cause the performance degradation is the *getGeoIpDbLocation()* method, more specifically the *getResourceAsStream()*.
+The *getResourceAsStream()* method returns an InputStream instance (depends on the file which one) which do not offer any further logic just reading the file by bytes which in the case of a big file a lot of disk memory communication.
 
-I would solve the problem by wrapping the whole getResourceAsStream() call into a BufferedInputStream.
-The BufferedInputStream extends from InputStream so no further logic change is needed. With a buffer the reading from disk to memory can be more efficient,
+I would solve the problem by wrapping the whole *getResourceAsStream()* call into a *BufferedInputStream*.
+The *BufferedInputStream* extends from *InputStream* so no further logic change is needed. With a buffer the reading from disk to memory can be more efficient,
 because we work with bulk data and while the processing happens from the buffer the stream loads bulk data continuously.
 This makes the code more performant since less communication needed between the memory and the disk. Also we can play around with the buffer size to fine tune the reading. 
