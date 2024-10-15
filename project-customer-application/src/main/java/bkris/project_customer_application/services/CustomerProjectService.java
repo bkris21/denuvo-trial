@@ -35,16 +35,25 @@ public class CustomerProjectService {
     @Modifying
     @Transactional
     public CustomerResponse createCustomerWithProject(CustomerRequest customerRequest) {
-        ProjectEntity projectEntity = customerRequest.getProject().map(project -> new ProjectEntity(project.getName(), project.getDescription())).orElse(null);
+        ProjectEntity projectEntity = customerRequest.getProject()
+                .map(project -> new ProjectEntity(project.getName(), project.getDescription()))
+                .orElse(null);
+
         CustomerEntity customerEntity = customerRepository.findByNameAndContact(customerRequest.getName(), customerRequest.getContact());
 
         if (customerEntity == null) {
             customerEntity = new CustomerEntity(customerRequest.getName(), customerRequest.getContact());
         }
-        if(projectEntity != null) {
+        if (projectEntity != null) {
             customerEntity.addProject(projectEntity);
         }
-        return mapper.mapToCustomerResponse(customerRepository.save(customerEntity));
+        if (customerEntity.getId() == null) {
+            customerEntity = customerRepository.save(customerEntity);
+        } else {
+            projectRepository.save(projectEntity);
+        }
+
+        return mapper.mapToCustomerResponse(customerEntity);
     }
 
     public List<CustomerResponse> getAllCustomersWithProjects() {
